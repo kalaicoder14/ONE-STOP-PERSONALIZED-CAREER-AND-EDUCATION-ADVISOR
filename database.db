@@ -1,0 +1,271 @@
+use career_guidance;
+CREATE TABLE departments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    department_code VARCHAR(10) NOT NULL,
+    department_name VARCHAR(150) NOT NULL
+);
+delete from departments;
+SET SQL_SAFE_UPDATES = 0;
+DELETE FROM departments;
+SET SQL_SAFE_UPDATES = 1;
+
+SELECT id, name FROM colleges
+WHERE name IN (
+    'College of Engineering, Guindy',
+    'Thanthai Periyar Government Institute of Technology (TPGIT)',
+    'Madras Medical College',
+    'Tamil Nadu Agricultural University',
+    'Government Law College',
+    'Presidency College'
+);
+DELETE FROM colleges
+WHERE id IN (1, 2, 3, 4, 5, 6);
+DESCRIBE colleges;
+
+ALTER TABLE colleges
+ADD COLUMN college_code VARCHAR(20) AFTER id;
+UPDATE colleges
+SET college_code = CONCAT('OLD', id)
+WHERE name IN (
+    'College of Engineering, Guindy',
+    'Thanthai Periyar Government Institute of Technology (TPGIT)',
+    'Madras Medical College',
+    'Tamil Nadu Agricultural University',
+    'Government Law College',
+    'Presidency College'
+);
+ALTER TABLE colleges
+MODIFY COLUMN college_code VARCHAR(20) NOT NULL UNIQUE;
+INSERT INTO colleges (college_code, name, district, category) VALUES
+('2005', 'Government College of Technology', 'Coimbatore', 'Engineering'),
+('2369', 'Government College of Engineering', 'Dharmapuri', 'Engineering'),
+('2709', 'Government College of Engineering', 'Erode', 'Engineering'),
+('5901', 'Alagappa Chettiar Government College of Engineering', 'Karaikudi', 'Engineering'),
+('2603', 'Government College of Engineering', 'Krishnagiri', 'Engineering'),
+('2615', 'Government College of Engineering', 'Salem', 'Engineering'),
+('3464', 'Government College of Engineering', 'Thanjavur', 'Engineering'),
+('5009', 'Government College of Engineering', 'Theni', 'Engineering'),
+('3465', 'Government College of Engineering', 'Tiruchirappalli', 'Engineering'),
+('4974', 'Government College of Engineering', 'Tirunelveli', 'Engineering'),
+('1516', 'Thanthai Periyar Government College of Engineering', 'Vellore', 'Engineering');
+
+SELECT id, name
+FROM colleges
+WHERE name IN (
+    'College of Engineering, Guindy',
+    'Thanthai Periyar Government Institute of Technology (TPGIT)',
+    'Madras Medical College',
+    'Tamil Nadu Agricultural University',
+    'Government Law College',
+    'Presidency College'
+);
+ALTER TABLE colleges
+ADD COLUMN status VARCHAR(20) DEFAULT 'active';
+
+UPDATE colleges
+SET status = 'inactive'
+WHERE id IN (1, 2, 3, 4, 5, 6);
+
+select * from colleges;
+SELECT id, name, college_code
+FROM colleges
+WHERE college_code IS NULL;
+
+DELETE FROM colleges
+WHERE id IN (1, 2, 3, 4, 5, 6);
+
+CREATE TABLE colleges_temp (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    college_code VARCHAR(20) NOT NULL UNIQUE,
+    name VARCHAR(255) NOT NULL,
+    district VARCHAR(255) NOT NULL,
+    category VARCHAR(100),
+    status VARCHAR(20) DEFAULT 'active'
+);
+
+INSERT INTO colleges_temp (college_code, name, district, category, status)
+SELECT college_code, name, district, category, status
+FROM colleges
+WHERE status = 'active';
+
+INSERT INTO colleges (name, district, category, college_code, status) VALUES
+('Agricultural College and Research Institute', 'Coimbatore', 'Agriculture', '1', 'active'),
+('Horticultural College and Research Institute', 'Coimbatore', 'Agriculture', '102', 'active'),
+('Agricultural College and Research Institute', 'Madurai', 'Agriculture', '2', 'active'),
+('Agricultural College and Research Institute', 'Pudukottai', 'Agriculture', '104', 'active'),
+('Agricultural College and Research Institute', 'Thiruvannamalai', 'Agriculture', '105', 'active'),
+('Agricultural College and Research Institute', 'Thoothukudi', 'Agriculture', '3', 'active'),
+('Anbil Dharmalingam Agricultural College', 'Tiruchirappalli', 'Agriculture', '4', 'active'),
+('Horticultural College and Research Institute', 'Theni', 'Agriculture', '5', 'active'),
+('Agricultural College and Research Institute', 'Tirunelveli', 'Agriculture', '6', 'active'),
+('Agricultural College and Research Institute', 'Thanjavur', 'Agriculture', '7', 'active'),
+('Agricultural College and Research Institute', 'Vellore', 'Agriculture', '8', 'active'),
+('Horticultural College and Research Institute', 'Periyakulam', 'Agriculture', '9', 'active');
+
+USE career_guidance;
+
+INSERT INTO colleges (college_code, name, district, category, status) VALUES
+(1051003, 'Government Arts College, Ariyalur - 621713', 'Ariyalur', 'Arts & Science', 'active'),
+(1051018, 'Government Arts and Science College, Jayankondam - 621802', 'Ariyalur', 'Arts & Science', 'active'),
+(1011008, 'Government Arts and Science College, Perumbakkam, Chennai -600131', 'Chengalpattu', 'Arts & Science', 'active'),
+(1011009, 'Government Arts and Science College, ECR, Nemmeli - 603104', 'Chengalpattu', 'Arts & Science', 'active'),
+(1081011, 'Rajeswari Vedachalam Government Arts College, Chengalpattu-603001', 'Chengalpattu', 'Arts & Science', 'active'),
+(1081036, 'Government Arts and Science College, Cheyyur - 603302', 'Chengalpattu', 'Arts & Science', 'active'),
+(1011001, 'Presidency College (Autonomous) Chennai - 600005', 'Chennai', 'Arts & Science', 'active'),
+(1012002, 'Queen Mary''s College (Autonomous), Dr.Radhakrishnan Salai, Mylapore, Chennai - 600004', 'Chennai', 'Arts & Science', 'active'),
+(1012003, 'Bharathi Womens College (Autonomous), No.1 Prakasam Salai, Chennai - 600108', 'Chennai', 'Arts & Science', 'active'),
+(1013004, 'Government Arts College(Autonomous), Nandanam, Chennai - 600035', 'Chennai', 'Arts & Science', 'active'),
+(1011005, 'Dr.Ambedkar Government Arts College (Autonomous), Vyasarpadi, Chennai - 600039', 'Chennai', 'Arts & Science', 'active'),
+(1012006, 'Quaid-E-Millath Government College for Women (Autonomous), Anna Salai, Chennai - 600002', 'Chennai', 'Arts & Science', 'active'),
+(1011007, 'Government Arts and Science College, Dr.RK Nagar, Chennai - 600081', 'Chennai', 'Arts & Science', 'active'),
+(1011011, 'Government Arts and Science College, Alandur - 600016', 'Chennai', 'Arts & Science', 'active'),
+(1021001, 'Government Arts College (Autonomous), Coimbatore - 641018', 'Coimbatore', 'Arts & Science', 'active'),
+(1021007, 'Government Arts and Science College, Mettupalayam - 641104', 'Coimbatore', 'Arts & Science', 'active'),
+(1021013, 'Government Arts and Science College, Valparai - 642127', 'Coimbatore', 'Arts & Science', 'active'),
+(1021015, 'Government Arts and Science College, Pollachi-642002', 'Coimbatore', 'Arts & Science', 'active'),
+(1021016, 'Government Arts and Science College, Thondamuthur- 641109', 'Coimbatore', 'Arts & Science', 'active'),
+(1022017, 'Government Arts and Science College for Women, Puliyakulam, Coimbatore - 641045', 'Coimbatore', 'Arts & Science', 'active'),
+(1081001, 'Periyar Arts College, Cuddalore - 607001', 'Cuddalore', 'Arts & Science', 'active'),
+(1081006, 'Thiru Kolanjiappar Government Arts College, Virudhachalam - 606001', 'Cuddalore', 'Arts & Science', 'active'),
+(1081013, 'Government Arts College, Chidambaram - 608102', 'Cuddalore', 'Arts & Science', 'active'),
+(1081015, 'Manbumigu Dr. Puratchi Thalaivar M.G.R Government Arts and Science College, keezha vanniyur, Kattumannar Koil -608302', 'Cuddalore', 'Arts & Science', 'active'),
+(1081025, 'Government Arts and Science College, Tittakkudi, Cuddalore District-606106', 'Cuddalore', 'Arts & Science', 'active'),
+(1081030, 'Government Arts and Science College, Vadalur- 607303', 'Cuddalore', 'Arts & Science', 'active'),
+(1081034, 'Government Arts and Science College, Panruti- 607106', 'Cuddalore', 'Arts & Science', 'active'),
+(1031003, 'Government Arts College, Dharmapuri - 636705', 'Dharmapuri', 'Arts & Science', 'active'),
+(1032012, 'Government Arts and Science College for Women, Karimangalam - 635111', 'Dharmapuri', 'Arts & Science', 'active'),
+(1031014, 'Bharat Ratna Puratchi Thalaivar Dr. M.G.R Govt Arts & Science College, Palacode - 636808', 'Dharmapuri', 'Arts & Science', 'active'),
+(1031016, 'Government Arts and Science College, Pennagaram - 636803', 'Dharmapuri', 'Arts & Science', 'active'),
+(1031017, 'Government Arts and Science College, Harur - 636903', 'Dharmapuri', 'Arts & Science', 'active'),
+(1031018, 'Government Arts and Science College, Pappireddipatti - 636905', 'Dharmapuri', 'Arts & Science', 'active'),
+(1031022, 'Government Arts and Science College, Eriyur-636810', 'Dharmapuri', 'Arts & Science', 'active'),
+(1042003, 'M.V.Muthiah Government Arts College for Women, Dindigul- 624001', 'Dindigul', 'Arts & Science', 'active'),
+(1042010, 'Government Arts College for Women, Nilakottai - 624202', 'Dindigul', 'Arts & Science', 'active'),
+(1042019, 'Government Arts and Science College for Women, Kodaikanal - 624101', 'Dindigul', 'Arts & Science', 'active'),
+(1041022, 'Government Arts and Science College, Thaneerpanthampatti, Eriyodu - 624702, Vedasandur,Dindigul.', 'Dindigul', 'Arts & Science', 'active'),
+(1041027, 'Government Arts and Science College, Reddiarchatram-624622', 'Dindigul', 'Arts & Science', 'active'),
+(1041029, 'Government Arts and Science College, Oddanchatram-624619', 'Dindigul', 'Arts & Science', 'active'),
+(1041030, 'Government Arts and Science College, Natham - 624401', 'Dindigul', 'Arts & Science', 'active');
+
+INSERT INTO colleges (college_code, name, district, category, status) VALUES
+(1041005, 'V. S. Sivalingam Government Arts College, Pulankurichi - 630413', 'Sivagangai', 'Arts & Science', 'active'),
+(1041006, 'Raja Doraisingam Government Arts College, Sivagangai- 630651', 'Sivagangai', 'Arts & Science', 'active'),
+(1041007, 'Alagappa Government Arts College Karaikudi- 630003', 'Sivagangai', 'Arts & Science', 'active'),
+(1042011, 'Government Arts College for Women, Sivagangai- 630562', 'Sivagangai', 'Arts & Science', 'active'),
+(1041031, 'Government Arts and Science College, Manamadurai - 630606', 'Sivagangai', 'Arts & Science', 'active'),
+(1071002, 'Kamarajar Govt Arts College, Surandai - 627859', 'Tenkasi', 'Arts & Science', 'active'),
+(1071006, 'Government Arts and Science College, Sankarankovil - 627756', 'Tenkasi', 'Arts & Science', 'active'),
+(1072007, 'Government Arts and Science College for Women, Alangulam - 627851', 'Tenkasi', 'Arts & Science', 'active'),
+(1071010, 'Government Arts and Science College, Kadayanallur, Tenkasi - 627751', 'Tenkasi', 'Arts & Science', 'active'),
+(1051001, 'Government Arts College (Autonomous), Kumbakonam- 612002', 'Thanjavur', 'Arts & Science', 'active'),
+(1052002, 'Government College for Women(Autonomous), Kumbakonam- 612001', 'Thanjavur', 'Arts & Science', 'active'),
+(1051004, 'Rajah Serfoji Government College(Autonomous), Thanjavur - 613005', 'Thanjavur', 'Arts & Science', 'active'),
+(1052005, 'Kunthavai Naacchiyaar Government Arts College for Women(Autonomous), Thanjavur - 613007', 'Thanjavur', 'Arts & Science', 'active'),
+(1051009, 'Government Arts and Science College, Peravurani - 614804', 'Thanjavur', 'Arts & Science', 'active'),
+(1052013, 'Government Arts and Science College for Women, Orathanadu - 614625', 'Thanjavur', 'Arts & Science', 'active'),
+(1051020, 'Government Arts and Science College, Thirukkattupalli, Old Block Development Office, Budalur-613602', 'Thanjavur', 'Arts & Science', 'active'),
+(1051023, 'Government Arts and Science College, Thiruvidaimaruthur - 612104', 'Thanjavur', 'Arts & Science', 'active'),
+(1021002, 'Government Arts College, Udhagamandalam - 643002', 'The Nilgiris', 'Arts & Science', 'active'),
+(1021012, 'Government Arts and Science College, Gudalur - 643212', 'The Nilgiris', 'Arts & Science', 'active'),
+(1021021, 'Government Arts and Science College, Coonoor - 643101', 'The Nilgiris', 'Arts & Science', 'active'),
+(1041016, 'Government Arts and Science College, Veerapandi -625534', 'Theni', 'Arts & Science', 'active'),
+(1041018, 'Government Arts and Science College, Aundipatti- 625512', 'Theni', 'Arts & Science', 'active'),
+(1041020, 'Government Arts and Science College, Kottur - 625534', 'Theni', 'Arts & Science', 'active'),
+(1081022, 'Government Arts and Science College, Thirupathur - 635901', 'Thirupathur', 'Arts & Science', 'active'),
+(1081033, 'Government Arts and Science College, Natrampalli-635852', 'Thirupathur', 'Arts & Science', 'active'),
+(1011010, 'Government Arts and Science College, Thiruvottiyur, Chennai-600019', 'Thiruvallur', 'Arts & Science', 'active'),
+(1081003, 'Loganatha Narayanaswamy Government Arts College (Autonomous), Ponneri-601204', 'Thiruvallur', 'Arts & Science', 'active'),
+(1081012, 'Sri Subramanyaswamy Government Arts College, Tiruttani-631209', 'Thiruvallur', 'Arts & Science', 'active'),
+(1081005, 'Kalaignar Karunanidhi Government Arts College, Tiruvannamalai - 606603', 'Thiruvannamalai', 'Arts & Science', 'active'),
+(1081007, 'Arignar Anna Government Arts College, Cheyyar-604407', 'Thiruvannamalai', 'Arts & Science', 'active'),
+(1081018, 'Government Arts and Science College, Thennangur - Vandavasi - 604408', 'Thiruvannamalai', 'Arts & Science', 'active'),
+(1051007, 'Thiru. Vi-Ka Government Arts College, Thiruvarur - 610003', 'Thiruvarur', 'Arts & Science', 'active'),
+(1051008, 'Manni Raja Gopala Swamy Government Arts College, Mannargudi - 614001', 'Thiruvarur', 'Arts & Science', 'active'),
+(1051011, 'Dr.Puratchi Thalaivar M.G.R Government Arts and Science College, Kudavasal - 612601', 'Thiruvarur', 'Arts & Science', 'active'),
+(1051015, 'Government Arts and Science College, Thiruthuraipoondi - 614715', 'Thiruvarur', 'Arts & Science', 'active'),
+(1051016, 'Government Arts and Science College, Nannilam - 610105', 'Thiruvarur', 'Arts & Science', 'active'),
+(1052021, 'Government Arts and Science College for Women, Koothanallur- 614101', 'Thiruvarur', 'Arts & Science', 'active'),
+(1051022, 'Government Arts and Science College, Muthupettai - 614704', 'Thiruvarur', 'Arts & Science', 'active'),
+(1071003, 'Government Arts and Science college, Krishna Nagar, Kovilpatti - 628503', 'Thoothukudi', 'Arts & Science', 'active'),
+(1072005, 'Government Arts and Science College For Women, Sathankulam - 628704', 'Thoothukudi', 'Arts & Science', 'active'),
+(1071008, 'Government Arts and Science College, Nagalapuram - 628904', 'Thoothukudi', 'Arts & Science', 'active'),
+(1071012, 'Government Arts and Science College, Ottapidaram - 628401', 'Thoothukudi', 'Arts & Science', 'active'),
+(1072001, 'Rani Anna Govt College for Women, Tirunelveli – 627008', 'Tirunelveli', 'Arts & Science', 'active'),
+(1071011, 'Government Arts and Science College, Manur-627201', 'Tirunelveli', 'Arts & Science', 'active'),
+(1021003, 'Chikkanna Government Arts College, Tiruppur - 641602', 'Tiruppur', 'Arts & Science', 'active'),
+(1022004, 'LRG Government Arts College for Women, Tiruppur - 641604', 'Tiruppur', 'Arts & Science', 'active'),
+(1021005, 'Government Arts College, Udumalpet - 642126', 'Tiruppur', 'Arts & Science', 'active'),
+(1021006, 'Government Arts and Science College, Kangeyam - 638108', 'Tiruppur', 'Arts & Science', 'active'),
+(1021009, 'Government Arts and Science College, Avinashi - 641654', 'Tiruppur', 'Arts & Science', 'active'),
+(1021010, 'Puratchi Thalaivi Amma Government Arts and Science College, Palladam - 641664', 'Tiruppur', 'Arts & Science', 'active'),
+(1021020, 'Government Arts and Science College, Dharapuram-638657', 'Tiruppur', 'Arts & Science', 'active'),
+(1061002, 'Thanthai Periyar Government Arts and Science College (Autonomous), Tiruchirapalli- 620023', 'Trichy', 'Arts & Science', 'active'),
+(1061004, 'Arignar Anna Government Arts College, Musiri- 621201', 'Trichy', 'Arts & Science', 'active'),
+(1061006, 'Government Arts College, Tiruverumbur, Trichy - 620022', 'Trichy', 'Arts & Science', 'active'),
+(1061011, 'Government Arts and Science College,Kumulur, Lalgudi -621712', 'Trichy', 'Arts & Science', 'active'),
+(1061014, 'Government Arts and Science College, Srirangam - 620027', 'Trichy', 'Arts & Science', 'active'),
+(1061017, 'Government Arts and Science College, Manapparai- 621306', 'Trichy', 'Arts & Science', 'active'),
+(1081002, 'Government Thirumagal Mills College, Gudiyatham - 632002', 'Vellore', 'Arts & Science', 'active'),
+(1081004, 'Muthurangam Government Arts College (Autonomous), Vellore - 632002', 'Vellore', 'Arts & Science', 'active'),
+(1081016, 'Puratchithalaivar Dr. M.G.R. Government Arts and Science College, Madhanur -635804', 'Vellore', 'Arts & Science', 'active'),
+(1081032, 'Government Arts and Science College, Serkadu-632106', 'Vellore', 'Arts & Science', 'active'),
+(1081008, 'Arignar Anna Government Arts College, Villupuram-605602', 'Villupuram', 'Arts & Science', 'active'),
+(1081010, 'Thiru. A. Govindasamy Government Arts College, Tindivanam-604307', 'Villupuram', 'Arts & Science', 'active'),
+(1082017, 'Dr.M.G.R. Government Arts and Science College for Women, Villupuram-605401', 'Villupuram', 'Arts & Science', 'active'),
+(1081019, 'Government Arts and Science College, Thiruvennainallur - 607203', 'Villupuram', 'Arts & Science', 'active'),
+(1081026, 'Government Arts and Science College, Thiruchitrambalam Koot Road, Vanur, Villupuram - 605111', 'Villupuram', 'Arts & Science', 'active'),
+(1081028, 'Government Arts and Science College, Gingee-604202', 'Villupuram', 'Arts & Science', 'active'),
+(1081035, 'Government Arts and Science College, Vikravandi - 605652', 'Villupuram', 'Arts & Science', 'active'),
+(1041014, 'Government Arts and Science College, ESI Hospital, Anaiyur Panchayat, Sivakasi - 626124', 'Virudhunagar', 'Arts & Science', 'active'),
+(1041021, 'Government Arts and Science College, Sattur, Virudhunagar - 626203', 'Virudhunagar', 'Arts & Science', 'active'),
+(1041025, 'Government Arts and Science College, Aruppukottai - 626134, Virudhunagar', 'Virudhunagar', 'Arts & Science', 'active'),
+(1041026, 'Government Arts and Science College, Srivilliputhur, Virudhunagar - 626125', 'Virudhunagar', 'Arts & Science', 'active'),
+(1041028, 'Government Arts and Science College, Tiruchuli-626129', 'Virudhunagar', 'Arts & Science', 'active');
+
+
+INSERT INTO colleges (college_code, name, district, category, status) VALUES
+(1071004, 'Government Arts and Science College, Nagercoil - 629004', 'Kanyakumari', 'Arts & Science', 'active'),
+(1071009, 'Government Arts and Science College, Kanyakumari - 629401', 'Kanyakumari', 'Arts & Science', 'active'),
+(1061003, 'Government Arts College(Autonomous), Thanthonimalai , Karur - 639005', 'Karur', 'Arts & Science', 'active'),
+(1061007, 'Dr.Kalaignar Government Arts College, Kulithalai-639120', 'Karur', 'Arts & Science', 'active'),
+(1061016, 'Government Arts and Science College, Tharagampatti, Kadavur (T.K) - 621301', 'Karur', 'Arts & Science', 'active'),
+(1061019, 'Government Arts and Science College, Aravakurichi-639201', 'Karur', 'Arts & Science', 'active'),
+(1031002, 'Government Arts College for Men, Krishnagiri - 635001', 'Krishnagiri', 'Arts & Science', 'active'),
+(1032009, 'Government Arts and Science College for Women, Ankinayanapalli, Barugur - 635104', 'Krishnagiri', 'Arts & Science', 'active'),
+(1032010, 'Government Arts College for Women, Krishnagiri - 635002', 'Krishnagiri', 'Arts & Science', 'active'),
+(1031011, 'Government Arts and Science College, Hosur - 635110', 'Krishnagiri', 'Arts & Science', 'active'),
+(1031021, 'Government Arts and Science College, Thalli-635107', 'Krishnagiri', 'Arts & Science', 'active'),
+(1042001, 'Sri Meenakshi Government Arts College for Women(Autonomous), Goripalayam, Madurai-625002', 'Madurai', 'Arts & Science', 'active'),
+(1041004, 'Government Arts College, Melur- 625106', 'Madurai', 'Arts & Science', 'active'),
+(1041023, 'Government Arts and Science College, Thirumangalam-625008', 'Madurai', 'Arts & Science', 'active'),
+(1052006, 'Dharmapuram Gnanambigai Government Arts College for Women, Mayiladuthurai - 609001', 'Mayiladuthurai', 'Arts & Science', 'active'),
+(1051010, 'Government Arts and Science College, Chinna Illuppapattu, College Road, Manalmedu-609202', 'Mayiladuthurai', 'Arts & Science', 'active'),
+(1051012, 'Ponmana semmal Puratchi Thalaivar M.G.R. Government Arts and Science College, Sirkali, Puthur-609108', 'Mayiladuthurai', 'Arts & Science', 'active'),
+(1051019, 'Government Arts and Science College, Kuthalam - 609810', 'Mayiladuthurai', 'Arts & Science', 'active'),
+(1051014, 'Government Arts and Science College, Vedaranyam - 614810', 'Nagapattinam', 'Arts & Science', 'active'),
+(1051017, 'Government Arts and Science College, Nagapattinam -611106', 'Nagapattinam', 'Arts & Science', 'active'),
+(1031004, 'Arignar Anna Government Arts College, Namakkal-637002', 'Namakkal', 'Arts & Science', 'active'),
+(1031005, 'Thiruvalluvar Government Arts College, Rasipuram- 637401', 'Namakkal', 'Arts & Science', 'active'),
+(1032006, 'Namakkal Kavignar Ramalingam Government Arts College for Women, Namakkal - 637001', 'Namakkal', 'Arts & Science', 'active'),
+(1031013, 'Government Arts and Science College, Komarapalayam - 638183', 'Namakkal', 'Arts & Science', 'active'),
+(1031020, 'Government Arts and Science College, Sendamangalam - 674404', 'Namakkal', 'Arts & Science', 'active'),
+(1061010, 'Government Arts and Science College, Veppanthattai- 621116', 'Perambalur', 'Arts & Science', 'active'),
+(1061012, 'Government Arts and Science College, Perambalur - 621107', 'Perambalur', 'Arts & Science', 'active'),
+(1062015, 'Government Arts and Science College for Women, Veppur - 621717', 'Perambalur', 'Arts & Science', 'active'),
+(1061021, 'Government Arts and Science College, Kollakkanatham - 621106', 'Perambalur', 'Arts & Science', 'active'),
+(1061001, 'H.H. The Rajah''s College (Autonomous), Pudukkottai - 622001', 'Pudukkottai', 'Arts & Science', 'active'),
+(1062005, 'Kalaignar Karunanidhi Government Arts College for Women (Autonomous), Pudukkottai- 622001', 'Pudukkottai', 'Arts & Science', 'active'),
+(1061008, 'Government Arts and Science College, Karambakudi - 622302', 'Pudukkottai', 'Arts & Science', 'active'),
+(1061013, 'Government Arts and Science College, Aranthangi - 614618', 'Pudukkottai', 'Arts & Science', 'active'),
+(1061018, 'Government Arts and Science College, Thirumayam-622503', 'Pudukkottai', 'Arts & Science', 'active'),
+(1061020, 'Government Arts and Science College, Alangudi-622304', 'Pudukkottai', 'Arts & Science', 'active'),
+(1041002, 'Sethupathy Govternment Arts College, Ramanathapuram- 623502', 'Ramanathapuram', 'Arts & Science', 'active'),
+(1042008, 'Government Arts College for Women, Ramanathapuram- 623501', 'Ramanathapuram', 'Arts & Science', 'active'),
+(1041009, 'Government Arts College, Paramakudi- 623701', 'Ramanathapuram', 'Arts & Science', 'active'),
+(1041012, 'Government Arts and Science College, Kadaladi - 623703', 'Ramanathapuram', 'Arts & Science', 'active'),
+(1041013, 'Government Arts and Science College, Mudhukulathur-623704', 'Ramanathapuram', 'Arts & Science', 'active'),
+(1041015, 'Government Arts and Science College, Thiruvadanai - 623407', 'Ramanathapuram', 'Arts & Science', 'active'),
+(1041017, 'Bharat Ratna Dr. APJ.Abdul Kalam Government Arts and Science College, Rameswaram - 623526', 'Ramanathapuram', 'Arts & Science', 'active'),
+(1042024, 'Government Arts and Science College for Women, Mudukulathur Road, Paramakudi, Ramanathapuram - 623707', 'Ramanathapuram', 'Arts & Science', 'active');
+
+select * from users;
