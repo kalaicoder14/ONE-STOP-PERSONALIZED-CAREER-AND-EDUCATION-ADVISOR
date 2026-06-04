@@ -1,0 +1,6 @@
+HTML
+CSS
+JS
+MYSQL
+FLASK
+Domain-Fullstack
