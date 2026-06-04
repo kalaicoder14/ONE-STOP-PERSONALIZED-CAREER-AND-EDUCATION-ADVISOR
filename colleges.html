@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Top Government Colleges for <span class="text-primary">{{ career }}</span></h2>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Check Your Admission Chances</h5>
+            <form action="{{ url_for('colleges') }}" method="GET" class="row g-3">
+                <input type="hidden" name="career" value="{{ career }}">
+                <div class="col-md-6">
+                    <label for="marks" class="form-label">Enter your Cutoff Mark / Score</label>
+                    <input type="number" step="0.01" class="form-control" id="marks" name="marks"
+                        placeholder="e.g. 190.5" value="{{ user_mark if user_mark else '' }}" required>
+                </div>
+                <div class="col-md-6 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Check Eligibility</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        {% if colleges %}
+        {% for college in colleges %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ college['name'] }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ college['district'] }}</h6>
+                    <p class="card-text">Category: {{ college['category'] }}</p>
+
+                    <hr>
+                    <h6>Previous Year Cutoffs:</h6>
+                    {% if college['cutoffs'] %}
+                    <ul class="list-group list-group-flush">
+                        {% for cutoff in college['cutoffs'] %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ cutoff['course_name'] }} ({{ cutoff['category'] }})
+                            <span class="badge bg-secondary rounded-pill">{{ cutoff['cutoff_mark'] }}</span>
+                        </li>
+                        {% if user_mark %}
+                        <div class="alert mt-2 
+                                        {% if user_mark >= cutoff['cutoff_mark'] %}alert-success
+                                        {% elif user_mark >= cutoff['cutoff_mark'] - 5 %}alert-warning
+                                        {% else %}alert-danger{% endif %} py-1">
+                            {% if user_mark >= cutoff['cutoff_mark'] %}
+                            High Chance
+                            {% elif user_mark >= cutoff['cutoff_mark'] - 5 %}
+                            Medium Chance
+                            {% else %}
+                            Low Chance
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-muted">No cutoff data available.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-info">No colleges found for this category currently in our database.</div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="mt-4">
+        <a href="{{ url_for('home') }}" class="btn btn-secondary">Back to Home</a>
+    </div>
+</div>
+{% endblock %}

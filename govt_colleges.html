@@ -1,0 +1,399 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+
+    <!-- Page Header -->
+    <div class="govt-header mb-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <h2 class="mb-1 fw-bold text-white">
+                    <i class="bi bi-bank2 me-2"></i>Government Colleges Explorer
+                </h2>
+                <p class="text-white-50 mb-0">Browse all government colleges across Tamil Nadu — Arts & Science, Engineering, Agriculture & Law</p>
+            </div>
+            <a href="{{ url_for('career_results') }}" class="btn btn-outline-light px-4">
+                <i class="bi bi-arrow-left me-1"></i> My Report
+            </a>
+        </div>
+    </div>
+
+    <!-- College Type Filter Tabs -->
+    <div class="card mb-4 shadow-sm border-0 filter-card">
+        <div class="card-body p-3">
+            <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
+                <span class="fw-bold text-dark me-2">
+                    <i class="bi bi-funnel-fill text-primary me-1"></i>Filter by College Type:
+                </span>
+                <div class="btn-group flex-wrap" role="group" id="college-type-filters">
+                    <a href="{{ url_for('govt_colleges', college_type='all', district_filter=district_filter) }}"
+                        class="btn {{ 'btn-primary' if college_type == 'all' else 'btn-outline-primary' }} px-4 filter-btn">
+                        <i class="bi bi-grid-3x3-gap-fill me-1"></i>All
+                    </a>
+                    {% if 'Arts & Science' in allowed_types %}
+                    <a href="{{ url_for('govt_colleges', college_type='arts', district_filter=district_filter) }}"
+                        class="btn {{ 'btn-primary' if college_type == 'arts' else 'btn-outline-primary' }} px-4 filter-btn">
+                        <i class="bi bi-book-half me-1"></i>Arts & Science
+                    </a>
+                    {% endif %}
+                    {% if 'Engineering' in allowed_types %}
+                    <a href="{{ url_for('govt_colleges', college_type='engineering', district_filter=district_filter) }}"
+                        class="btn {{ 'btn-primary' if college_type == 'engineering' else 'btn-outline-primary' }} px-4 filter-btn">
+                        <i class="bi bi-gear-wide-connected me-1"></i>Engineering
+                    </a>
+                    {% endif %}
+                    {% if 'Agriculture' in allowed_types %}
+                    <a href="{{ url_for('govt_colleges', college_type='agriculture', district_filter=district_filter) }}"
+                        class="btn {{ 'btn-primary' if college_type == 'agriculture' else 'btn-outline-primary' }} px-4 filter-btn">
+                        <i class="bi bi-tree-fill me-1"></i>Agriculture
+                    </a>
+                    {% endif %}
+                    {% if 'Law' in allowed_types %}
+                    <a href="{{ url_for('govt_colleges', college_type='law', district_filter=district_filter) }}"
+                        class="btn {{ 'btn-primary' if college_type == 'law' else 'btn-outline-primary' }} px-4 filter-btn">
+                        <i class="bi bi-briefcase-fill me-1"></i>Law
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- District Filter -->
+            <div class="d-flex align-items-center flex-wrap gap-2">
+                <span class="fw-bold text-dark me-2">
+                    <i class="bi bi-geo-alt-fill text-primary me-1"></i>Filter by District:
+                </span>
+                <div class="btn-group" role="group">
+                    <a href="{{ url_for('govt_colleges', college_type=college_type, district_filter='native') }}"
+                        class="btn {{ 'btn-success' if district_filter == 'native' else 'btn-outline-success' }} px-4">
+                        Native
+                        {% if user_district %}<small class="d-block opacity-75" style="font-size: 0.7em;">{{ user_district }}</small>{% endif %}
+                    </a>
+                    <a href="{{ url_for('govt_colleges', college_type=college_type, district_filter='nearby') }}"
+                        class="btn {{ 'btn-success' if district_filter == 'nearby' else 'btn-outline-success' }} px-4">
+                        Nearby
+                    </a>
+                    <a href="{{ url_for('govt_colleges', college_type=college_type, district_filter='all') }}"
+                        class="btn {{ 'btn-success' if district_filter == 'all' else 'btn-outline-success' }} px-4">
+                        All Districts
+                    </a>
+                </div>
+                <span class="badge bg-dark ms-auto fs-6 px-3 py-2">
+                    <i class="bi bi-building me-1"></i>{{ colleges|length }} College{{ 's' if colleges|length != 1 else '' }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Stats -->
+    <div class="row mb-4 g-3">
+        {% if 'Arts & Science' in allowed_types %}
+        <div class="col-6 col-md-3">
+            <div class="stat-card stat-arts">
+                <i class="bi bi-book-half"></i>
+                <span class="stat-count">{{ type_counts.get('Arts & Science', 0) }}</span>
+                <span class="stat-label">Arts & Science</span>
+            </div>
+        </div>
+        {% endif %}
+        {% if 'Engineering' in allowed_types %}
+        <div class="col-6 col-md-3">
+            <div class="stat-card stat-engg">
+                <i class="bi bi-gear-wide-connected"></i>
+                <span class="stat-count">{{ type_counts.get('Engineering', 0) }}</span>
+                <span class="stat-label">Engineering</span>
+            </div>
+        </div>
+        {% endif %}
+        {% if 'Agriculture' in allowed_types %}
+        <div class="col-6 col-md-3">
+            <div class="stat-card stat-agri">
+                <i class="bi bi-tree-fill"></i>
+                <span class="stat-count">{{ type_counts.get('Agriculture', 0) }}</span>
+                <span class="stat-label">Agriculture</span>
+            </div>
+        </div>
+        {% endif %}
+        {% if 'Law' in allowed_types %}
+        <div class="col-6 col-md-3">
+            <div class="stat-card stat-law">
+                <i class="bi bi-briefcase-fill"></i>
+                <span class="stat-count">{{ type_counts.get('Law', 0) }}</span>
+                <span class="stat-label">Law</span>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- College Cards -->
+    <div class="row" id="college-list">
+        {% if colleges %}
+        {% for college in colleges %}
+        <div class="col-md-6 mb-4 college-card-wrapper" data-type="{{ college['category'] }}">
+            <div class="card h-100 shadow-sm border-0 overflow-hidden college-card">
+                <!-- Category Badge Strip -->
+                <div class="category-strip 
+                    {% if college['category'] == 'Arts & Science' %}strip-arts
+                    {% elif college['category'] == 'Engineering' %}strip-engg
+                    {% elif college['category'] == 'Agriculture' %}strip-agri
+                    {% elif college['category'] == 'Law' %}strip-law
+                    {% endif %}">
+                </div>
+
+                <div class="card-header bg-white border-bottom-0 pt-4 px-4">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <h5 class="card-title mb-1 fw-bold text-dark">{{ college['name'] }}</h5>
+                            <div class="d-flex flex-wrap gap-1 mt-2">
+                                <a href="https://www.google.com/maps/search/{{ college['name'] }},+{{ college['district'] }},+Tamil+Nadu"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="badge bg-primary-subtle text-primary border border-primary-subtle px-2 text-decoration-none"
+                                    title="View on Google Maps" style="cursor: pointer;">
+                                    <i class="bi bi-geo-alt-fill me-1"></i> {{ college['district'] }}
+                                </a>
+                                {% if college['district']|lower == user_district|lower %}
+                                <span class="badge bg-success-subtle text-success border border-success-subtle px-2">
+                                    <i class="bi bi-house-fill me-1"></i> Native
+                                </span>
+                                {% endif %}
+                                <span class="badge px-2
+                                    {% if college['category'] == 'Arts & Science' %}bg-info-subtle text-info border border-info-subtle
+                                    {% elif college['category'] == 'Engineering' %}bg-warning-subtle text-warning border border-warning-subtle
+                                    {% elif college['category'] == 'Agriculture' %}bg-success-subtle text-success border border-success-subtle
+                                    {% elif college['category'] == 'Law' %}bg-danger-subtle text-danger border border-danger-subtle
+                                    {% endif %}">
+                                    <i class="bi bi-tag-fill me-1"></i>{{ college['category'] }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body px-4 pt-0">
+                    <hr class="mt-2 mb-3 opacity-10">
+
+                    {% if college['departments'] %}
+                    <h6 class="text-uppercase tracking-wider text-muted small fw-bold mb-3">
+                        <i class="bi bi-mortarboard me-1"></i>Departments & Cutoffs
+                    </h6>
+                    <div class="list-group list-group-flush">
+                        {% for dept in college['departments'] %}
+                        <div class="list-group-item px-0 py-3 border-0 border-bottom dept-item">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="fw-bold text-secondary">{{ dept['name'] }}</span>
+                                <span class="badge rounded-pill bg-light text-dark border px-3">
+                                    Cutoff: {{ dept['req_cutoff'] }}{% if dept.get('req_cutoff_max') and dept['req_cutoff_max'] > 0 %} – {{ dept['req_cutoff_max'] }}{% endif %}
+                                </span>
+                            </div>
+                            {% if dept.get('category') %}
+                            <small class="text-muted"><i class="bi bi-tag me-1"></i>Category: {{ dept['category'] }}</small>
+                            {% endif %}
+
+                            {% if dept.get('chance') %}
+                            <div class="mt-2 text-center">
+                                {% if dept['chance'] == 'High Chance' %}
+                                <span class="badge bg-success py-2 px-3 fs-6 w-100 shadow-sm"
+                                    style="background-color: #28a745 !important;">
+                                    <i class="bi bi-check-circle-fill me-2"></i> High Chance (Eligible)
+                                </span>
+                                {% elif dept['chance'] == 'Medium Chance' %}
+                                <span class="badge bg-warning text-dark py-2 px-3 fs-6 w-100 shadow-sm"
+                                    style="background-color: #ffc107 !important;">
+                                    <i class="bi bi-info-circle-fill me-2"></i> Medium Chance (Probable)
+                                </span>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-3 text-muted">
+                        <i class="bi bi-info-circle me-1"></i>No cutoff data available for this college.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="col-12 py-5 text-center">
+            <div class="alert alert-info py-5 shadow-sm border-0 rounded-4">
+                <i class="bi bi-exclamation-octagon-fill fs-1 d-block mb-3 text-primary"></i>
+                <h4 class="fw-bold">No Eligible Colleges Found</h4>
+                <p class="mb-4 text-muted">
+                    We couldn't find any eligible government colleges with matching cutoff data
+                    {% if college_type != 'all' %} for <strong>{{ college_type|title }}</strong>{% endif %}
+                    {% if district_filter == 'native' %} in <strong>{{ user_district }}</strong>
+                    {% elif district_filter == 'nearby' %} in nearby districts{% endif %}.
+                    <br><small>Only colleges where your score gives you a High or Medium admission chance are shown.</small>
+                </p>
+                <div class="d-flex justify-content-center gap-2">
+                    {% if district_filter != 'all' %}
+                    <a href="{{ url_for('govt_colleges', college_type=college_type, district_filter='all') }}"
+                        class="btn btn-primary px-4">
+                        <i class="bi bi-globe2 me-1"></i>Search All Districts
+                    </a>
+                    {% endif %}
+                    {% if college_type != 'all' %}
+                    <a href="{{ url_for('govt_colleges', college_type='all', district_filter=district_filter) }}"
+                        class="btn btn-outline-primary px-4">
+                        <i class="bi bi-grid-3x3-gap-fill me-1"></i>Show All Types
+                    </a>
+                    {% endif %}
+                    <a href="{{ url_for('home') }}" class="btn btn-outline-secondary px-4">Home</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="mt-4 mb-5 text-center">
+        <a href="{{ url_for('home') }}" class="btn btn-secondary btn-lg px-5 shadow">
+            <i class="bi bi-house-door me-2"></i> Back to Home
+        </a>
+    </div>
+</div>
+
+<style>
+    /* Header Gradient */
+    .govt-header {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        border-radius: 16px;
+        padding: 2rem 2rem;
+        box-shadow: 0 8px 32px rgba(15, 52, 96, 0.3);
+    }
+
+    /* Filter Card */
+    .filter-card {
+        background: linear-gradient(135deg, #f0f4ff 0%, #e8ecff 100%) !important;
+        border-radius: 12px;
+    }
+
+    .filter-btn {
+        transition: all 0.25s ease;
+    }
+    .filter-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Stat Cards */
+    .stat-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1.2rem 1rem;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        cursor: default;
+    }
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+    .stat-card i {
+        font-size: 1.5rem;
+        margin-bottom: 0.3rem;
+    }
+    .stat-count {
+        font-size: 1.8rem;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+    .stat-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 600;
+        opacity: 0.8;
+    }
+
+    .stat-arts {
+        background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+        color: #0d47a1;
+    }
+    .stat-engg {
+        background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+        color: #e65100;
+    }
+    .stat-agri {
+        background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+        color: #1b5e20;
+    }
+    .stat-law {
+        background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+        color: #880e4f;
+    }
+
+    /* Category Strip */
+    .category-strip {
+        height: 5px;
+        width: 100%;
+    }
+    .strip-arts { background: linear-gradient(90deg, #0d47a1, #42a5f5); }
+    .strip-engg { background: linear-gradient(90deg, #e65100, #ff9800); }
+    .strip-agri { background: linear-gradient(90deg, #1b5e20, #4caf50); }
+    .strip-law  { background: linear-gradient(90deg, #880e4f, #e91e63); }
+
+    /* College Card */
+    .college-card {
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        border-radius: 12px !important;
+    }
+    .college-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12) !important;
+    }
+
+    /* Dept Item */
+    .dept-item {
+        transition: background-color 0.15s ease;
+    }
+    .dept-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .tracking-wider {
+        letter-spacing: 0.1em;
+    }
+
+    /* Fade in animation */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .college-card-wrapper {
+        animation: fadeInUp 0.4s ease forwards;
+    }
+    .college-card-wrapper:nth-child(2) { animation-delay: 0.05s; }
+    .college-card-wrapper:nth-child(3) { animation-delay: 0.1s; }
+    .college-card-wrapper:nth-child(4) { animation-delay: 0.15s; }
+    .college-card-wrapper:nth-child(5) { animation-delay: 0.2s; }
+    .college-card-wrapper:nth-child(6) { animation-delay: 0.25s; }
+    .college-card-wrapper:nth-child(7) { animation-delay: 0.3s; }
+    .college-card-wrapper:nth-child(8) { animation-delay: 0.35s; }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .govt-header {
+            padding: 1.5rem;
+        }
+        .govt-header h2 {
+            font-size: 1.3rem;
+        }
+        #college-type-filters .btn {
+            padding: 0.4rem 0.7rem;
+            font-size: 0.8rem;
+        }
+        .stat-count {
+            font-size: 1.4rem;
+        }
+    }
+</style>
+{% endblock %}

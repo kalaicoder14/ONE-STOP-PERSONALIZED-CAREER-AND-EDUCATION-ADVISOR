@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h3>Class 12 Assessment: Career Path Finder</h3>
+        </div>
+        <div class="card-body">
+            <p>Answer the following questions to discover suitable career paths.</p>
+            <form action="{{ url_for('assessment_12th') }}" method="POST">
+                {% for question in questions %}
+                <div class="mb-4">
+                    <label class="form-label fw-bold">{{ loop.index }}. {{ question['question_text'] }}</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q_{{ question['id'] }}" value="Yes" required>
+                        <label class="form-check-label">Yes</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q_{{ question['id'] }}" value="No" required>
+                        <label class="form-check-label">No</label>
+                    </div>
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Submit Assessment</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

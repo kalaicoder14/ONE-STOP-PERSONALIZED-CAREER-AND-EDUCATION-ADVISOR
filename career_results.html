@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="card shadow border-0 overflow-hidden">
+
+        <div class="card-header text-white text-center py-4"
+            style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);">
+            <h3 class="mb-0"><i class="bi bi-award-fill me-2"></i>Your Career Guidance Report ({{ level }})</h3>
+        </div>
+
+        <div class="card-body p-5">
+
+            <div class="text-center mb-4">
+                <p class="text-uppercase text-muted fw-bold tracking-wider mb-2" style="letter-spacing: 0.15em;">
+                    <i class="bi bi-star-fill text-warning me-1"></i>
+                    Recommended {{ 'Stream' if level == '10th' else 'Career Path' }}
+                </p>
+                <h1 class="display-3 fw-bold text-primary mb-3">{{ recommendation }}</h1>
+                <p class="lead text-muted mb-0">
+                    Based on your interests and marks, we recommend this path for a successful future.
+                </p>
+            </div>
+
+
+            {% if level == '12th' and recommendation != 'Medical' %}
+            <div class="text-center mb-4">
+                <div class="d-inline-block bg-light rounded-4 px-5 py-3 shadow-sm">
+                    <span class="text-muted fw-bold small text-uppercase d-block mb-1">Your Cutoff Score</span>
+                    <span class="display-5 fw-bold text-dark">{{ user_mark | round(2) }}</span>
+                </div>
+            </div>
+            {% endif %}
+
+            <hr class="my-4 opacity-10">
+
+
+            <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+                {% if level == '12th' %}
+                {% if recommendation == 'Medical' %}
+                <a href="{{ url_for('mbbs_colleges') }}" class="btn btn-danger btn-lg px-5 shadow-sm fw-bold">
+                    <i class="bi bi-heart-pulse-fill me-2"></i>Check Eligibility with NEET Score
+                </a>
+                {% elif recommendation == 'Government_Service' %}
+                <a href="{{ url_for('govt_colleges') }}" class="btn btn-lg px-5 shadow-sm fw-bold text-white"
+                    style="background: linear-gradient(135deg, #1a1a2e, #0f3460);">
+                    <i class="bi bi-bank2 me-2"></i>Explore Government Colleges
+                </a>
+                {% else %}
+                <a href="{{ url_for('colleges', career=recommendation) }}"
+                    class="btn btn-primary btn-lg px-5 shadow-sm fw-bold">
+                    <i class="bi bi-building me-2"></i>Find Eligible Colleges
+                </a>
+                {% endif %}
+                {% endif %}
+                <a href="{{ url_for('assessment') }}" class="btn btn-outline-primary btn-lg px-4">
+                    <i class="bi bi-arrow-repeat me-2"></i>Retake Assessment
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .tracking-wider {
+        letter-spacing: 0.1em;
+    }
+</style>
+{% endblock %}

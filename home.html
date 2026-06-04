@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Career Guidance System{% endblock %}
+
+{% block content %}
+
+<section class="hero-section bg-gradient-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Find Your Perfect Career Path</h1>
+                <p class="lead mb-4">
+                    Get personalized career recommendations based on your stream, marks and interests.
+                    Discover eligible colleges, scholarships and admission timelines.
+                </p>
+                {% if not session.get('user_id') %}
+                <div class="d-flex gap-3">
+                    <a href="{{ url_for('register') }}" class="btn btn-light btn-lg">
+                        <i class="bi bi-person-plus me-2"></i>Get Started
+                    </a>
+                    <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                    </a>
+                </div>
+                {% else %}
+                <div class="d-flex gap-3">
+                    <a href="{{ url_for('career_results') }}" class="btn btn-light btn-lg">
+                        <i class="bi bi-graph-up me-2"></i>View Results
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="col-lg-6 text-center">
+                <i class="bi bi-mortarboard-fill me-2 display-1 opacity-75" style="font-size: 15rem;"></i>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">How It Works</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                            style="width: 60px; height: 60px;">
+                            <i class="bi bi-person-vcard fs-3"></i>
+                        </div>
+                        <h4 class="card-title">1. Complete Profile</h4>
+                        <p class="card-text text-muted">
+                            Fill in your demographics, stream, subject marks and interests to create your profile.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                            style="width: 60px; height: 60px;">
+                            <i class="bi bi-clipboard-check fs-3"></i>
+                        </div>
+                        <h4 class="card-title">2. Take Assessment</h4>
+                        <p class="card-text text-muted">
+                            Complete a psychometric assessment to understand your personality and career preferences.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                            style="width: 60px; height: 60px;">
+                            <i class="bi bi-graph-up-arrow fs-3"></i>
+                        </div>
+                        <h4 class="card-title">3. Get Recommendations</h4>
+                        <p class="card-text text-muted">
+                            Receive personalized career suggestions, eligible colleges, scholarships and admission
+                            timelines.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Why Choose Our System?</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="bi bi-check-circle-fill text-success fs-1 mb-3"></i>
+                    <h5>Personalized Recommendations</h5>
+                    <p class="text-muted">Based on your unique profile and interests</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="bi bi-building text-primary fs-1 mb-3"></i>
+                    <h5>Government Colleges</h5>
+                    <p class="text-muted">Comprehensive list of eligible colleges</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <i class="bi bi-geo-alt-fill text-danger fs-1 mb-3"></i>
+                    <h5>College Location</h5>
+                    <p class="text-muted">Find nearby colleges with Google Maps integration</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

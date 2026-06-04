@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3>Class 10 Assessment: Find Your Stream</h3>
+        </div>
+        <div class="card-body">
+            <p>Answer the following questions to get a recommendation for your 11th/12th stream.</p>
+            <form action="{{ url_for('assessment_10th') }}" method="POST">
+                {% for question in questions %}
+                <div class="mb-4">
+                    <label class="form-label fw-bold">{{ loop.index }}. {{ question['question_text'] }}</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q_{{ question['id'] }}" value="Yes" required>
+                        <label class="form-check-label">Yes</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="q_{{ question['id'] }}" value="No" required>
+                        <label class="form-check-label">No</label>
+                    </div>
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-success">Submit Assessment</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Manage Assessment Questions</h2>
+
+    <div class="card my-4">
+        <div class="card-header bg-light">
+            <strong>Add New Question</strong>
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('admin_add_question') }}" method="POST">
+                <div class="row">
+                    <div class="col-md-3">
+                        <select name="grade_level" class="form-select" required>
+                            <option value="10th">10th Grade</option>
+                            <option value="12th">12th Grade</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" name="question_text" class="form-control" placeholder="Question Text"
+                            required>
+                    </div>
+                    <div class="col-md-3">
+                        <select name="category" class="form-select" required>
+                            <option value="Logic">Logic (10th)</option>
+                            <option value="Science">Science (10th)</option>
+                            <option value="Commerce">Commerce (10th)</option>
+                            <option value="Arts">Arts (10th)</option>
+                            <option value="Engineering">Engineering (12th)</option>
+                            <option value="Medical">Medical (12th)</option>
+                            <option value="Design">Design (12th)</option>
+                            <option value="Govt">Govt Services (12th)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-success w-100">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Grade</th>
+                <th>Question</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for q in questions %}
+            <tr>
+                <td>{{ q['id'] }}</td>
+                <td>{{ q['grade_level'] }}</td>
+                <td>{{ q['question_text'] }}</td>
+                <td>{{ q['category'] }}</td>
+                <td>
+
+
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+</div>
+{% endblock %}
